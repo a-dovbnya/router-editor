@@ -10,4 +10,4 @@ script:
 deploy:
   provider: heroku
   api_key: $HEROKU_KEY
-  app: router-editor
+  app: router-editor 
