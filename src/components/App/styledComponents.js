@@ -49,34 +49,6 @@ export const MapWrapper = styled.div`
   }
 `;
 
-export const LoaderWrapp = styled.div`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.6);
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-
-  .loading-title {
-    color: #4d4d4d;
-    font-size: 18px;
-    text-align: center;
-    width: 100%;
-  }
-  .loader {
-    text-align: center;
-  }
-
-  @media screen and (max-width: 650px) {
-    display: block;
-  }
-`;
-
 export const AreaWrapper = styled.div`
   position: relative;
 
@@ -87,13 +59,4 @@ export const AreaWrapper = styled.div`
     margin: auto;
     right: 10px;
   }
-`;
-
-export const ErrorContainer = styled.div`
-  margin-top: 20px;
-  background: #f0f0f0;
-  padding: 10px 20px;
-  font-size: 14px;
-  line-height: 1.5;
-  color: rgba(244, 54, 76, 0.8);
 `;
