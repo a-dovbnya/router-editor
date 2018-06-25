@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import Loader from "react-svg-spinner";
 import { LoaderWrapp } from "./styledComponents";
 
