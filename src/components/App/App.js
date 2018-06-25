@@ -12,7 +12,6 @@ import {
   AppWrapper,
   ListWrapper,
   MapWrapper,
-  LoaderWrapp,
   AreaWrapper
 } from "./styledComponents";
 
