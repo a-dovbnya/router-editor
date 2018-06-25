@@ -6,7 +6,8 @@ import {
   receivedError,
   sortData,
   mapLoaded,
-  getRoute
+  getRoute,
+  setCenter
 } from "../actions";
 
 const initialState = {
@@ -14,14 +15,16 @@ const initialState = {
   fetchItem: false,
   error: "",
   mapLoading: true,
-  getRoute: false
+  getRoute: false,
+  center: []
 };
 
 export default handleActions(
   {
     [mapLoaded]: (state, action) => ({
       ...state,
-      mapLoading: false
+      mapLoading: false,
+      center: action.payload
     }),
     [getRoute]: (state, action) => ({
       ...state,
@@ -34,6 +37,7 @@ export default handleActions(
       getRoute: false
     }),
     [receivedData]: (state, action) => ({
+      ...state,
       fetchItem: false,
       error: "",
       getRoute: false,
@@ -50,6 +54,10 @@ export default handleActions(
       error: "",
       getRoute: false,
       mapItems: action.payload
+    }),
+    [setCenter]: (state, action) => ({
+      ...state,
+      center: action.payload
     })
   },
   initialState
@@ -61,3 +69,4 @@ export const getError = state => state.error;
 export const getItems = state => state.mapItems;
 export const isMapLoading = state => state.mapLoading;
 export const isGetRoute = state => state.getRoute;
+export const getCenter = state => state.center;

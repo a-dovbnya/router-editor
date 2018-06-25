@@ -16,7 +16,8 @@ const actions = createActions({
   },
   MAP: {
     LOADED: undefined,
-    GET_ROUTE: undefined
+    GET_ROUTE: undefined,
+    SET_CENTER: undefined
   }
 });
 
@@ -27,3 +28,4 @@ export const sortData = actions.sort.data;
 export const removeItem = actions.remove.item;
 export const mapLoaded = actions.map.loaded;
 export const getRoute = actions.map.getRoute;
+export const setCenter = actions.map.setCenter;

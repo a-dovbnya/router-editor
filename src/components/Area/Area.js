@@ -2,13 +2,16 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 
 import { setPlace } from "../../actions";
-import { isGetRoute } from "../../reducers";
+import { isGetRoute, getCenter } from "../../reducers";
 import { Input } from "./styledComponents";
 
 export class Area extends PureComponent {
   keyDownHandler = e => {
     if (e.keyCode === 13) {
-      this.props.setPlace(e.target.value);
+      this.props.setPlace({
+        name: e.target.value,
+        coords: this.props.getCenter
+      });
       e.target.value = "";
     }
   };
@@ -28,17 +31,21 @@ export class Area extends PureComponent {
         innerRef={input => {
           this.input = input;
         }}
-      /> 
+      />
     );
   }
 }
 
 const mapStateToProps = state => ({
-  isGetRoute: isGetRoute(state)
+  isGetRoute: isGetRoute(state),
+  getCenter: getCenter(state)
 });
 
 const mapDispatchToProps = {
   setPlace
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Area);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Area);

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { YMaps, Map, GeoObject } from "react-yandex-maps";
 
 import { getItems } from "../../reducers";
-import { sortData, mapLoaded, getRoute } from "../../actions";
+import { sortData, mapLoaded, getRoute, setCenter } from "../../actions";
 
 export let mapContext = null;
 
@@ -14,14 +14,14 @@ const mapState = {
 };
 
 export class MapContainer extends PureComponent {
-
   pmCollection = null;
 
   onAPIAvailable = map => {
     /*** Map is loaded ***/
     mapContext = map;
     this.pmCollection = new mapContext.GeoObjectCollection();
-    this.props.mapLoaded();
+    this.props.mapLoaded(mapState.center);
+    //this.props.setCenter(mapState.center);
   };
 
   setCenter = coords => {
@@ -31,7 +31,7 @@ export class MapContainer extends PureComponent {
   addPlacemark = obj => {
     const placemark = new mapContext.Placemark(
       obj.coords,
-      { balloonContent: obj.name },
+      { balloonContent: obj.place },
       {
         draggable: true,
         preset: "islands#blueIcon",
@@ -52,7 +52,8 @@ export class MapContainer extends PureComponent {
       mapContext.geocode(coords).then(res => {
         const txt = res.geoObjects.get(0).properties.get("text");
         const newItems = _this.props.items.map(
-          (el, i) => (i === index ? { name: txt, coords: coords } : el)
+          (el, i) =>
+            i === index ? { name: el.name, coords: coords, place: txt } : el
         );
 
         /*** Dispatch sorted data ***/
@@ -88,6 +89,12 @@ export class MapContainer extends PureComponent {
     return lines;
   };
 
+  boundsChange = () => {
+    /*** get map center after map draggable ***/
+    const center = this.mapRef.getCenter();
+    this.props.setCenter(center);
+  };
+
   componentDidUpdate() {
     /*** Remove current geoObjects ***/
     this.pmCollection.removeAll();
@@ -106,19 +113,10 @@ export class MapContainer extends PureComponent {
 
     /*** add pmCollection to Map ***/
     this.mapRef.geoObjects.add(this.pmCollection);
-
-    /*** set Bounds ***/
-    if (this.pmCollection.getLength() > 1) {
-      this.mapRef.setBounds(this.pmCollection.getBounds());
-    }
   }
 
   render() {
     const Lines = this.getLines();
-
-    if (this.props.items.length === 1) {
-      this.setCenter(this.props.items[0].coords);
-    }
 
     return (
       <YMaps onApiAvaliable={this.onAPIAvailable}>
@@ -129,6 +127,7 @@ export class MapContainer extends PureComponent {
           }}
           width="100%"
           height="100%"
+          onBoundsChange={this.boundsChange}
         >
           {Lines}
         </Map>
@@ -144,7 +143,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   sortData,
   mapLoaded,
-  getRoute
+  getRoute,
+  setCenter
 };
 
 export default connect(
